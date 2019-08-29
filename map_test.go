@@ -13,10 +13,24 @@ type testCase struct {
 
 func TestNewMap(t *testing.T) {
 	testCases := []testCase{
-		// errors:
+
+		// parsing errors:
 		{ "Foo", Map{}, true },
 		{ "Foo north=Foo", Map{}, true },
 		{ "Foo wrongDirection=Bar", Map{}, true },
+
+		// conflicting errors:
+		{ "Foo north=Bar\nBar south=Bee",Map{}, true },
+		{ "Foo north=Bar\nBaz south=Foo",Map{}, true },
+
+		{ "Foo south=Bar\nBar north=Bee",Map{}, true },
+		{ "Foo south=Bar\nBaz north=Foo",Map{}, true },
+
+		{ "Foo west=Bar\nBar east=Bee",Map{}, true },
+		{ "Foo west=Bar\nBaz east=Foo",Map{}, true },
+
+		{ "Foo east=Bar\nBar west=Bee",Map{}, true },
+		{ "Foo east=Bar\nBaz west=Foo",Map{}, true },
 
 		// happy paths:
 		{ "",

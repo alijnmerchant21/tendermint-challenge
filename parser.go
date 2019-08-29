@@ -6,15 +6,7 @@ import (
 	"strings"
 )
 
-type rawCity struct {
-	name  string
-	north string
-	south string
-	west  string
-	east  string
-}
-
-func ParseCity(line string) (*rawCity, error) {
+func ParseCity(line string) (*City, error) {
 	arr := strings.Fields(line)
 	if len(arr) < 2 || len(arr) > 5 {
 		return nil, fmt.Errorf("wrong line '%s'", line)
@@ -23,7 +15,7 @@ func ParseCity(line string) (*rawCity, error) {
 	if err != nil {
 		return nil, err
 	}
-	c := rawCity{name: name}
+	c := City{name: name}
 	for _, v := range arr[1:] {
 		dir := strings.Split(v, "=")
 		if len(dir) != 2 {

@@ -7,7 +7,7 @@ import (
 func TestParseCityLine(t *testing.T) {
 	type TestDataItem struct {
 		input    string
-		result   *rawCity
+		result   *City
 		hasError bool
 	}
 	testDataItems := []TestDataItem{
@@ -16,11 +16,11 @@ func TestParseCityLine(t *testing.T) {
 		{"Foo", nil, true},
 		{"Foo Bee", nil, true},
 		{"Foo nor=Bee", nil, true},
-		{"Foo north=Bee", &rawCity{name: "Foo", north: "Bee"}, false},
-		{"Foo north=Bee south=Bar", &rawCity{name: "Foo", north: "Bee", south: "Bar"}, false},
-		{"Foo north=Bee south=Bar west=Baz", &rawCity{name: "Foo", north: "Bee", south: "Bar", west: "Baz"}, false},
-		{"Foo north=Bee south=Bar west=Baz east=Cat", &rawCity{name: "Foo", north: "Bee", south: "Bar", west: "Baz", east: "Cat"}, false},
-		{"Foo west=Baz east=Cat north=Bee south=Bar", &rawCity{name: "Foo", north: "Bee", south: "Bar", west: "Baz", east: "Cat"}, false},
+		{"Foo north=Bee", &City{name: "Foo", north: "Bee"}, false},
+		{"Foo north=Bee south=Bar", &City{name: "Foo", north: "Bee", south: "Bar"}, false},
+		{"Foo north=Bee south=Bar west=Baz", &City{name: "Foo", north: "Bee", south: "Bar", west: "Baz"}, false},
+		{"Foo north=Bee south=Bar west=Baz east=Cat", &City{name: "Foo", north: "Bee", south: "Bar", west: "Baz", east: "Cat"}, false},
+		{"Foo west=Baz east=Cat north=Bee south=Bar", &City{name: "Foo", north: "Bee", south: "Bar", west: "Baz", east: "Cat"}, false},
 		{"Foo west=Baz east=Cat north=Bee south=Bar north=Bee", nil, true},
 
 		{"Foo south=Foo", nil, true}, // we can't go from Foo to Foo
