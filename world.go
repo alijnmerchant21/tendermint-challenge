@@ -62,8 +62,9 @@ func (w *World) MoveAlien(id int) {
 	}
 }
 
-func (w *World) assingAlienToCity(id int, c *City) {
-	w.aliens[id].cityName = c.name
+func (w *World) assingAlienToCity(id int, cityName string) {
+	w.aliens[id].cityName = cityName
+	c := w.cities[cityName]
 	if c.alienId != 0 {
 		w.figth(id, c.alienId, c.name)
 	} else {

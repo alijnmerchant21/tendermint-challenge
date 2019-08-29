@@ -10,14 +10,13 @@ type TestDataItem struct {
 }
 
 func TestAvailableDirs(t *testing.T) {
-	some := &City{}
 	testDataItems := []TestDataItem{
 		{City{name: "Foo"}, []Direction{}},
-		{City{name: "Foo", north: some}, []Direction{North}},
-		{City{name: "Foo", south: some}, []Direction{South}},
-		{City{name: "Foo", west: some}, []Direction{West}},
-		{City{name: "Foo", east: some}, []Direction{East}},
-		{City{name: "Foo", north: some, south: some, west: some, east: some}, []Direction{North, South, West, East}},
+		{City{name: "Foo", north: "some"}, []Direction{North}},
+		{City{name: "Foo", south: "some"}, []Direction{South}},
+		{City{name: "Foo", west: "some"}, []Direction{West}},
+		{City{name: "Foo", east: "some"}, []Direction{East}},
+		{City{name: "Foo", north: "some", south: "some", west: "some", east: "some"}, []Direction{North, South, West, East}},
 	}
 	for _, item := range testDataItems {
 		result := item.receiver.AvailableDirs()

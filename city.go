@@ -9,24 +9,24 @@ type City struct {
 
 	alienId int // 0 means nobody!
 
-	north *City
-	south *City
-	west  *City
-	east  *City
+	north string // empty means there is no way
+	south string
+	west  string
+	east  string
 }
 
 func (c *City) AvailableDirs() []Direction {
 	dirs := make([]Direction, 0)
-	if c.north != nil {
+	if c.north != "" {
 		dirs = append(dirs, North)
 	}
-	if c.south != nil {
+	if c.south != "" {
 		dirs = append(dirs, South)
 	}
-	if c.west != nil {
+	if c.west != "" {
 		dirs = append(dirs, West)
 	}
-	if c.east != nil {
+	if c.east != "" {
 		dirs = append(dirs, East)
 	}
 	return dirs
@@ -34,17 +34,17 @@ func (c *City) AvailableDirs() []Direction {
 
 func (c City) String() string {
 	s := fmt.Sprintf("{%s (%v)", c.name, c.alienId)
-	if c.north != nil {
-		s += fmt.Sprintf(" north=%s", c.north.name)
+	if c.north != "" {
+		s += fmt.Sprintf(" north=%s", c.north)
 	}
-	if c.south != nil {
-		s += fmt.Sprintf(" south=%s", c.south.name)
+	if c.south != "" {
+		s += fmt.Sprintf(" south=%s", c.south)
 	}
-	if c.west != nil {
-		s += fmt.Sprintf(" west=%s", c.west.name)
+	if c.west != "" {
+		s += fmt.Sprintf(" west=%s", c.west)
 	}
-	if c.east != nil {
-		s += fmt.Sprintf(" east=%s", c.east.name)
+	if c.east != "" {
+		s += fmt.Sprintf(" east=%s", c.east)
 	}
 	return s + "}"
 }
