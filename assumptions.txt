@@ -1,0 +1,10 @@
+1) initially aliens are spread through cities randomly, when more than one alien goes to the same city, only last one get there, others are gone // if two aliens are placed into the same city during initial accomodation, they kill each other and destroy the city
+
+2) if alien is trapped in some city each iteration increase the number of it's steps
+
+3) that the city names will never contain numeric characters
+
+4) when map is loading: citie pairs are created together (north-south, west-east)
+    if there is no line for the city but it is referenced in some direction then this city will be present in the map
+
+5) one thread!
