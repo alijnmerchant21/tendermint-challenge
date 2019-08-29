@@ -89,8 +89,10 @@ func getOrCreate(cities map[string]*City, name string) *City {
 }
 
 func (m *Map) RemoveCity(name string) {
-	c := m.cities[name]
-	// fmt.Printf("%v\n", m.cities)
+	c, ok := m.cities[name]
+	if !ok {
+		return
+	}
 	if c.north != "" {
 		m.cities[c.north].south = ""
 	}

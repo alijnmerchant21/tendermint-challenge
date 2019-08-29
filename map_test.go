@@ -5,15 +5,12 @@ import (
 	"testing"
 )
 
-type testCase struct {
-	input string
-	expected Map
-	hasError bool
-}
-
 func TestNewMap(t *testing.T) {
-	testCases := []testCase{
-
+	testCases := []struct {
+		input string
+		expected Map
+		hasError bool
+	}{
 		// parsing errors:
 		{ "Foo", Map{}, true },
 		{ "Foo north=Foo", Map{}, true },
@@ -72,6 +69,34 @@ func TestNewMap(t *testing.T) {
 			}
 			t.Logf("NewMap from '%s': PASSED", tc.input)
 		}
+	}
+
+}
+
+func TestRemoveCity(t *testing.T) {
+	testCases := []struct {
+		receiver Map
+		input string
+		expected Map
+	}{
+		{ Map{}, "any", Map{} },
+		{ Map{map[string]*City{"Foo": &City{name: "Foo", north: "Bar"}, "Bar": &City{name: "Bar", south: "Foo"}}},
+			"Foo",
+			Map{map[string]*City{"Bar": &City{name: "Bar"}}} },
+	}
+	for _, tc := range testCases {
+		original := tc.receiver.String()
+		tc.receiver.RemoveCity(tc.input)
+		if len(tc.expected.cities) != len(tc.receiver.cities) {
+			t.Errorf("%v.RemoveCity('%s'): FAILED, expected len=%v, but got len=%v", original, tc.input, len(tc.expected.cities), len(tc.receiver.cities))
+		}
+		for k, actualCity := range tc.receiver.cities {
+			expectedCity := *tc.expected.cities[k]
+			if expectedCity != *actualCity {
+				t.Errorf("%v.RemoveCity('%s'): FAILED, expected %v, but got '%v'", original, tc.input, expectedCity, *actualCity)
+			}
+		}
+		t.Logf("%v.RemoveCity('%s'): PASSED", original, tc.input)
 	}
 
 }
