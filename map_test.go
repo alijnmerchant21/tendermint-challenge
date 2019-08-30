@@ -79,10 +79,38 @@ func TestRemoveCity(t *testing.T) {
 		input string
 		expected Map
 	}{
-		{ Map{}, "any", Map{} },
-		{ Map{map[string]*City{"Foo": &City{name: "Foo", north: "Bar"}, "Bar": &City{name: "Bar", south: "Foo"}}},
-			"Foo",
-			Map{map[string]*City{"Bar": &City{name: "Bar"}}} },
+		{
+			receiver: Map{},
+			input: "any",
+			expected: Map{},
+		},
+		{
+			receiver: Map{map[string]*City{
+				"Foo": &City{name: "Foo", north: "Bar"},
+				"Bar": &City{name: "Bar", south: "Foo"}}},
+			input: "Foo",
+			expected: Map{map[string]*City{"Bar": &City{name: "Bar"}}},
+		},
+		{
+			receiver: Map{map[string]*City{
+				"Foo": &City{name: "Foo", north: "Bar", east: "Bee"},
+				"Bar": &City{name: "Bar", south: "Foo"},
+				"Bee": &City{name: "Bee", west: "Foo"}}},
+			input: "Foo",
+			expected: Map{map[string]*City{
+				"Bar": &City{name: "Bar"},
+				"Bee": &City{name: "Bee"}}},
+		},
+		{
+			receiver: Map{map[string]*City{
+				"Foo": &City{name: "Foo", north: "Bar", east: "Bee"},
+				"Bar": &City{name: "Bar", south: "Foo"},
+				"Bee": &City{name: "Bee", west: "Foo"}}},
+			input: "Bar",
+			expected: Map{map[string]*City{
+				"Foo": &City{name: "Foo", east: "Bee"},
+				"Bee": &City{name: "Bee", west: "Foo"}}},
+		},
 	}
 	for _, tc := range testCases {
 		original := tc.receiver.String()
