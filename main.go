@@ -32,15 +32,14 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("%v\n", world)
+	fmt.Printf("Initial world:\n%v\n", world)
 
 	for !world.StopCondition() {
-		fmt.Printf("len of aliens = %v\n", len(world.aliens))
 		for id := range world.aliens {
-			fmt.Printf("run for %v\n", id)
 			world.MoveAlien(id)
 		}
-		fmt.Printf("%v\n", world)
 	}
+
+	fmt.Printf("The rest of the world:\n%v\n", world)
 
 }

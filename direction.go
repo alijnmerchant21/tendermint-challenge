@@ -12,8 +12,8 @@ const (
 var pairs = map[Direction]Direction{
 	North: South,
 	South: North,
-	West: East,
-	East: West,
+	West:  East,
+	East:  West,
 }
 
 func (d Direction) Opposite() Direction {

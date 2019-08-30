@@ -108,12 +108,11 @@ func (m *Map) RemoveCity(name string) {
 	delete(m.cities, name)
 }
 
-func (m Map) String() string {
-	s := fmt.Sprintf("[")
+func (m Map) String() (s string) {
 	for _, c := range m.cities {
-		s += fmt.Sprintf("%v,", c)
+		s += fmt.Sprintf("%v\n", c)
 	}
-	return s + "]"
+	return
 }
 
 func (m Map) citiesAsArray() [](*City) {

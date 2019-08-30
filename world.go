@@ -10,7 +10,7 @@ const MIN_STEPS_NUMBER = 10000
 type World struct {
 	Map
 	aliens map[int]*Alien
-	rand  *rand.Rand
+	rand   *rand.Rand
 }
 
 func NewWorld(m *Map, n int, rand *rand.Rand) (*World, error) {
@@ -32,7 +32,6 @@ func NewWorld(m *Map, n int, rand *rand.Rand) (*World, error) {
 }
 
 func (w *World) MoveAlien(id int) {
-	fmt.Printf("alien#%d: start moving\n", id)
 	cityName := w.aliens[id].cityName
 
 	w.aliens[id].steps++
@@ -41,7 +40,6 @@ func (w *World) MoveAlien(id int) {
 
 	dirs := city.AvailableDirs()
 	if len(dirs) == 0 {
-		fmt.Printf("alien#%d: has no way to move\n", id)
 		return
 	}
 
@@ -49,7 +47,6 @@ func (w *World) MoveAlien(id int) {
 
 	i := w.rand.Intn(len(dirs))
 	dir := dirs[i]
-	fmt.Printf("alien#%d: I can move to %v, moving to %v\n", id, dirs, dir)
 	switch dir {
 	case North:
 		w.assingAlienToCity(id, city.north)
@@ -92,5 +89,5 @@ func (w *World) StopCondition() bool {
 }
 
 func (w *World) String() string {
-	return fmt.Sprintf("%v, %v", w.aliens, w.Map)
+	return fmt.Sprintf("%v", w.Map)
 }

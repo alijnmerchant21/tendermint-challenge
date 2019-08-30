@@ -33,7 +33,7 @@ func (c *City) AvailableDirs() []Direction {
 }
 
 func (c City) String() string {
-	s := fmt.Sprintf("{%s (%v)", c.name, c.alienId)
+	s := c.name
 	if c.north != "" {
 		s += fmt.Sprintf(" north=%s", c.north)
 	}
@@ -46,5 +46,5 @@ func (c City) String() string {
 	if c.east != "" {
 		s += fmt.Sprintf(" east=%s", c.east)
 	}
-	return s + "}"
+	return s
 }

@@ -7,46 +7,54 @@ import (
 
 func TestNewMap(t *testing.T) {
 	testCases := []struct {
-		input string
+		input    string
 		expected Map
 		hasError bool
 	}{
 		// parsing errors:
-		{ "Foo", Map{}, true },
-		{ "Foo north=Foo", Map{}, true },
-		{ "Foo wrongDirection=Bar", Map{}, true },
+		{"Foo", Map{}, true},
+		{"Foo north=Foo", Map{}, true},
+		{"Foo wrongDirection=Bar", Map{}, true},
 
 		// conflicting errors:
-		{ "Foo north=Bar\nBar south=Bee",Map{}, true },
-		{ "Foo north=Bar\nBaz south=Foo",Map{}, true },
+		{"Foo north=Bar\nBar south=Bee", Map{}, true},
+		{"Foo north=Bar\nBaz south=Foo", Map{}, true},
 
-		{ "Foo south=Bar\nBar north=Bee",Map{}, true },
-		{ "Foo south=Bar\nBaz north=Foo",Map{}, true },
+		{"Foo south=Bar\nBar north=Bee", Map{}, true},
+		{"Foo south=Bar\nBaz north=Foo", Map{}, true},
 
-		{ "Foo west=Bar\nBar east=Bee",Map{}, true },
-		{ "Foo west=Bar\nBaz east=Foo",Map{}, true },
+		{"Foo west=Bar\nBar east=Bee", Map{}, true},
+		{"Foo west=Bar\nBaz east=Foo", Map{}, true},
 
-		{ "Foo east=Bar\nBar west=Bee",Map{}, true },
-		{ "Foo east=Bar\nBaz west=Foo",Map{}, true },
+		{"Foo east=Bar\nBar west=Bee", Map{}, true},
+		{"Foo east=Bar\nBaz west=Foo", Map{}, true},
 
 		// happy paths:
-		{ "",
-			Map{map[string]*City{}}, false },
-		{ "Foo north=Bar",
-			Map{map[string]*City{
+		{
+			input:    "",
+			expected: Map{map[string]*City{}},
+			hasError: false},
+		{
+			input: "Foo north=Bar",
+			expected: Map{map[string]*City{
 				"Foo": &City{name: "Foo", north: "Bar"},
-				"Bar": &City{name: "Bar", south: "Foo"}}}, false },
-		{ "Foo north=Bar\nBar south=Foo",
-			Map{map[string]*City{
+				"Bar": &City{name: "Bar", south: "Foo"}}},
+			hasError: false},
+		{
+			input: "Foo north=Bar\nBar south=Foo",
+			expected: Map{map[string]*City{
 				"Foo": &City{name: "Foo", north: "Bar"},
-				"Bar": &City{name: "Bar", south: "Foo"}}}, false },
-		{ "Foo north=Bar west=Baz south=Qux\nBar south=Foo west=Bee",
-			Map{map[string]*City{
+				"Bar": &City{name: "Bar", south: "Foo"}}},
+			hasError: false},
+		{
+			input: "Foo north=Bar west=Baz south=Qux\nBar south=Foo west=Bee",
+			expected: Map{map[string]*City{
 				"Foo": &City{name: "Foo", north: "Bar", west: "Baz", south: "Qux"},
 				"Bar": &City{name: "Bar", south: "Foo", west: "Bee"},
 				"Baz": &City{name: "Baz", east: "Foo"},
 				"Qux": &City{name: "Qux", north: "Foo"},
-				"Bee": &City{name: "Bee", east: "Bar"}}}, false },
+				"Bee": &City{name: "Bee", east: "Bar"}}},
+			hasError: false},
 	}
 	for _, tc := range testCases {
 		b := []byte(tc.input)
@@ -76,12 +84,12 @@ func TestNewMap(t *testing.T) {
 func TestRemoveCity(t *testing.T) {
 	testCases := []struct {
 		receiver Map
-		input string
+		input    string
 		expected Map
 	}{
 		{
 			receiver: Map{},
-			input: "any",
+			input:    "any",
 			expected: Map{},
 		},
 		{
@@ -89,7 +97,8 @@ func TestRemoveCity(t *testing.T) {
 				"Foo": &City{name: "Foo", north: "Bar"},
 				"Bar": &City{name: "Bar", south: "Foo"}}},
 			input: "Foo",
-			expected: Map{map[string]*City{"Bar": &City{name: "Bar"}}},
+			expected: Map{map[string]*City{
+				"Bar": &City{name: "Bar"}}},
 		},
 		{
 			receiver: Map{map[string]*City{

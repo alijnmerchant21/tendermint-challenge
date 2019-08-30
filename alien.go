@@ -11,5 +11,5 @@ type Alien struct {
 }
 
 func (a Alien) String() string {
-	return fmt.Sprintf("alien{%v,%v,%v}", a.id, a.cityName, a.steps)
+	return fmt.Sprintf("alien{#%v, city=%v, steps=%v}", a.id, a.cityName, a.steps)
 }
