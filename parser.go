@@ -15,29 +15,33 @@ func ParseCity(line string) (*City, error) {
 	if err != nil {
 		return nil, err
 	}
-	c := City{name: name}
+	city := &City{name: name}
 	for _, v := range arr[1:] {
 		dir := strings.Split(v, "=")
 		if len(dir) != 2 {
 			return nil, fmt.Errorf("wrong line '%s': wrong direction '%s'", line, dir)
 		}
-		if dir[1] == name {
+		other, err := ParseCityName(dir[1])
+		if err != nil {
+			return nil, err
+		}
+		if other == name {
 			return nil, fmt.Errorf("wrong line '%s', wrong direction '%v': the road from the city '%s' can't lead to itself", line, dir, name)
 		}
 		switch dir[0] {
 		case "north":
-			c.north = dir[1]
+			city.north = other
 		case "south":
-			c.south = dir[1]
+			city.south = other
 		case "west":
-			c.west = dir[1]
+			city.west = other
 		case "east":
-			c.east = dir[1]
+			city.east = other
 		default:
 			return nil, fmt.Errorf("wrong line '%s': wrong direction '%s'", line, dir)
 		}
 	}
-	return &c, nil
+	return city, nil
 }
 
 var forbidden = regexp.MustCompile(`[\d\W]+`)

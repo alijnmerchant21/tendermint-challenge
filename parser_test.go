@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestParseCityLine(t *testing.T) {
+func TestParseCity(t *testing.T) {
 	type TestDataItem struct {
 		input    string
 		result   *City
@@ -16,6 +16,11 @@ func TestParseCityLine(t *testing.T) {
 		{"Foo", nil, true},
 		{"Foo Bee", nil, true},
 		{"Foo nor=Bee", nil, true},
+		{"wrong1 north=Bee", nil, true},
+		{"Foo north=wrong1", nil, true},
+		{"Foo south=wrong1", nil, true},
+		{"Foo west=wrong1", nil, true},
+		{"Foo east=wrong1", nil, true},
 		{"Foo north=Bee", &City{name: "Foo", north: "Bee"}, false},
 		{"Foo north=Bee south=Bar", &City{name: "Foo", north: "Bee", south: "Bar"}, false},
 		{"Foo north=Bee south=Bar west=Baz", &City{name: "Foo", north: "Bee", south: "Bar", west: "Baz"}, false},
