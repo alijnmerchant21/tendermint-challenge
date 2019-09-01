@@ -33,7 +33,10 @@ func main() {
 
 	for !world.StopCondition() {
 		for id := range world.aliens {
-			world.MoveAlien(id)
+			err := world.MoveAlien(id)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 

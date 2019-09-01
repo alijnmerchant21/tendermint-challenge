@@ -33,16 +33,20 @@ func NewWorld(m *Map, n int, rand Random) (*World, error) {
 	return &World{Map: *m, aliens: aliens, rand: rand}, nil
 }
 
-func (w *World) MoveAlien(id int) {
-	cityName := w.aliens[id].cityName
+func (w *World) MoveAlien(id int) error {
+	alien, ok := w.aliens[id]
+	if !ok {
+		return fmt.Errorf("Alien not found for id=%v", id)
+	}
+	cityName := alien.cityName
 
-	w.aliens[id].steps++
+	alien.steps++
 
 	city := w.cities[cityName]
-
 	dirs := city.AvailableDirs()
 	if len(dirs) == 0 {
-		return
+		// nowhere to go
+		return nil
 	}
 
 	city.alienId = 0 // clean the city
@@ -59,6 +63,7 @@ func (w *World) MoveAlien(id int) {
 	case East:
 		w.assingAlienToCity(id, city.east)
 	}
+	return nil
 }
 
 func (w *World) assingAlienToCity(id int, cityName string) {

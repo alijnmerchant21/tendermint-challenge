@@ -87,11 +87,14 @@ func TestRemoveCity(t *testing.T) {
 		input    string
 		expected Map
 	}{
+		// empty map
 		{
 			receiver: Map{},
 			input:    "any",
 			expected: Map{},
 		},
+
+		// 2 connected cities
 		{
 			receiver: Map{map[string]*City{
 				"Foo": &City{name: "Foo", north: "Bar"},
@@ -100,6 +103,8 @@ func TestRemoveCity(t *testing.T) {
 			expected: Map{map[string]*City{
 				"Bar": &City{name: "Bar"}}},
 		},
+
+		// 3 connected cities
 		{
 			receiver: Map{map[string]*City{
 				"Foo": &City{name: "Foo", north: "Bar", east: "Bee"},

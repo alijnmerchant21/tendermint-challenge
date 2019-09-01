@@ -37,10 +37,12 @@ func (r Randomizer) seed() {
 
 // for tests:
 
-type FakeRandomizer struct{}
+type FakeRandomizer struct {
+	fakeIntn int
+}
 
 func (r FakeRandomizer) Intn(n int) int {
-	return 123
+	return r.fakeIntn
 }
 
 func (r FakeRandomizer) Perm(n int) []int {
