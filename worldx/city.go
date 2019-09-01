@@ -15,6 +15,16 @@ type City struct {
 	east  string
 }
 
+func NewCity(name, n, s, w, e string) *City {
+	return &City{
+		name:  name,
+		north: n,
+		south: s,
+		west:  w,
+		east:  e,
+	}
+}
+
 func (c *City) AvailableDirs() []Direction {
 	dirs := make([]Direction, 0)
 	if c.north != "" {

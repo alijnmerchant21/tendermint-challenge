@@ -3,17 +3,20 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 	"github.com/climber73/tendermint-challenge/worldx"
+	"os"
 )
 
 func main() {
 	n := flag.Int("n", 2, "number of aliens")
+	path := flag.String("path", "", "path to map file")
 	flag.Parse()
 
-	// todo: get file path from args
+	if len(*path) == 0 {
+		panic("empty path")
+	}
 
-	file, err := os.Open("testdata/map.txt")
+	file, err := os.Open(*path)
 	if err != nil {
 		panic(err)
 	}

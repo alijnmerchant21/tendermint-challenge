@@ -4,7 +4,7 @@
 
 3) that the city names will never contain numeric characters
 
-4) when map is loading: citie pairs are created together (north-south, west-east)
+4) when map is loading: city pairs are created together (north-south, west-east)
     if there is no line for the city but it is referenced in some direction then this city will be present in the map
 
 5) one thread!

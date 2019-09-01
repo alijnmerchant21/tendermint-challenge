@@ -60,12 +60,18 @@ func TestParseCityName(t *testing.T) {
 		{"", "", true},
 		{"-1", "", true},
 		{"123", "", true},
+		{"bar.", "", true},
 		{"1bar", "", true},
-		{"bar1", "", true},
-		{"bar-foo", "", true},
+		{"-bar", "", true},
 		{"bar foo", "", true},
+		{"bar-", "bar-", true},
+		{"bar1", "bar1", false},
+		{"bar1bee", "bar1bee", false},
+		{"bar-foo", "bar-foo", false},
 		{"bar", "bar", false},
 		{"Bar", "Bar", false},
+		{"aa", "aa", false},
+		// {"a", "a", false},
 	}
 	for _, item := range testDataItems {
 		result, err := ParseCityName(item.input)

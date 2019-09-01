@@ -44,12 +44,12 @@ func ParseCity(line string) (*City, error) {
 	return city, nil
 }
 
-var forbidden = regexp.MustCompile(`[\d\W]+`)
+var allowed = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9]$`)
 
 func ParseCityName(s string) (string, error) {
-	if len(s) == 0 || forbidden.MatchString(s) {
-		return "", fmt.Errorf("wrong name '%s'", s)
-	} else {
+	if allowed.MatchString(s) {
 		return s, nil
+	} else {
+		return "", fmt.Errorf("wrong name '%s'", s)
 	}
 }
