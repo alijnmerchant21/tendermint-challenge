@@ -1,4 +1,4 @@
-package main
+package worldx
 
 import (
 	"fmt"
@@ -83,7 +83,7 @@ func (w *World) figth(id1 int, id2 int, cityName string) {
 	fmt.Printf("> %s has been destroyed by alien %v and alien %v!\n", cityName, id1, id2)
 }
 
-func (w *World) StopCondition() bool {
+func (w *World) stopCondition() bool {
 	if len(w.aliens) == 0 {
 		return true
 	}
@@ -93,6 +93,18 @@ func (w *World) StopCondition() bool {
 		}
 	}
 	return true
+}
+
+func (w *World) Run() error {
+	for !w.stopCondition() {
+		for id := range w.aliens {
+			err := w.MoveAlien(id)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func (w *World) String() string {

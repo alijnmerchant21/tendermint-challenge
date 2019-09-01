@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"github.com/climber73/tendermint-challenge/worldx"
 )
 
 func main() {
@@ -18,26 +19,21 @@ func main() {
 	}
 	defer file.Close()
 
-	m, err := NewMap(file)
+	m, err := worldx.NewMap(file)
 	if err != nil {
 		panic(err)
 	}
 
-	r := Randomizer{}
-	world, err := NewWorld(m, *n, r)
+	r := worldx.Randomizer{}
+	world, err := worldx.NewWorld(m, *n, r)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("Initial world:\n%v\n", world)
 
-	for !world.StopCondition() {
-		for id := range world.aliens {
-			err := world.MoveAlien(id)
-			if err != nil {
-				panic(err)
-			}
-		}
+	if err := world.Run(); err != nil {
+		panic(err)
 	}
 
 	fmt.Printf("The rest of the world:\n%v\n", world)

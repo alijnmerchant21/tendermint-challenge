@@ -1,4 +1,4 @@
-package main
+package worldx
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -345,7 +345,7 @@ func TestStopCondition(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		res := tc.world.StopCondition()
+		res := tc.world.stopCondition()
 		assert.Equal(t, tc.expectedResult, res)
 	}
 }
