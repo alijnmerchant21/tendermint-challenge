@@ -3,9 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math/rand"
 	"os"
-	"time"
 )
 
 func main() {
@@ -25,8 +23,7 @@ func main() {
 		panic(err)
 	}
 
-	s := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(s)
+	r := Randomizer{}
 	world, err := NewWorld(m, *n, r)
 	if err != nil {
 		panic(err)

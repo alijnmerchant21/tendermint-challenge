@@ -1,6 +1,6 @@
-1) initially aliens are spread through cities randomly, when more than one alien goes to the same city, only last one get there, others are gone // if two aliens are placed into the same city during initial accomodation, they kill each other and destroy the city
+1) if given aliens number (M) is greater than cities number (N), then only N aliens will be created in the world
 
-2) if alien is trapped in some city each iteration increase the number of it's steps
+2) if alien is trapped in some city (can't go anywhere) each iteration increase the number of it's steps
 
 3) that the city names will never contain numeric characters
 

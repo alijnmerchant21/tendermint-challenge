@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"sort"
 )
 
 type Map struct {
@@ -115,12 +116,24 @@ func (m Map) String() (s string) {
 	return
 }
 
-func (m Map) citiesAsArray() [](*City) {
+// returns sorted array to provide determinism in tests
+// todo: use only one aray maybe...
+func (m Map) citiesAsSortedArray() []*City {
 	arr := make([]*City, len(m.cities))
-	i := 0
-	for _, v := range m.cities {
-		arr[i] = v
-		i++
+	keys := m.sortedArrayOfCityNames()
+	for i, k := range keys {
+		arr[i] = m.cities[k]
 	}
 	return arr
+}
+
+func (m Map) sortedArrayOfCityNames() []string {
+	keys := make([]string, len(m.cities))
+	j := 0
+	for k := range m.cities {
+		keys[j] = k
+		j++
+	}
+	sort.Strings(keys)
+	return keys
 }

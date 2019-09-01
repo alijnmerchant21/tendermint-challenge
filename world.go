@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 )
 
 const MIN_STEPS_NUMBER = 10000
@@ -10,17 +9,20 @@ const MIN_STEPS_NUMBER = 10000
 type World struct {
 	Map
 	aliens map[int]*Alien
-	rand   *rand.Rand
+	rand   Random
 }
 
-func NewWorld(m *Map, n int, rand *rand.Rand) (*World, error) {
+func NewWorld(m *Map, n int, rand Random) (*World, error) {
+	if n < 0 {
+		return nil, fmt.Errorf("Wrong number of aliens: %v\n", n)
+	}
 	nc := len(m.cities)
 	if nc < n {
 		fmt.Printf("given number of aliens (%v) is greater than number of cities (%v), only %v aliens will be used\n", n, nc, nc)
 		n = nc
 	}
 	aliens := make(map[int]*Alien, n)
-	cities := m.citiesAsArray()
+	cities := m.citiesAsSortedArray()
 	perm := rand.Perm(nc)
 	for id := 1; id <= n; id++ { // starts from 1
 		index := perm[id-1]
