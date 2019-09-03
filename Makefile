@@ -1,2 +1,8 @@
 test:
-	go test . -v	
+	go test . -v
+
+generate-map:
+	go run ./testdata -n 20 -m 30 -path ./testdata/map.txt
+
+run:
+	go run . -n 500 -path ./testdata/map.txt

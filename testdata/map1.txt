@@ -1,5 +1,0 @@
-Foo east=Bar south=Bee
-Bar south=Baz west=Foo
-Bee north=Foo east=Baz
-Baz north=Bar west=Bee
-Aaa north=Bbb south=Ccc west=Ddd east=Eee

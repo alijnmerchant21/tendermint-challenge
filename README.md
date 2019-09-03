@@ -43,6 +43,13 @@ Feel free to make assumptions (for example, that the city names will never conta
 but please add comments or assertions describing the assumptions you are making.
 We are evaluating your skills to write production level code so please provide tests documentation.
 
+## Assumptions
+1. If given aliens number (M) is greater than the cities number (N), then only N aliens will be created in the world.
+2. If alien is trapped in some city (can't go anywhere) each iteration increase the number of it's steps.
+3. City names can only contain `A-Z`, `a-z`, `0-9`, `-`. The name must begin with a letter and cannot end with a dash.
+4. When a map is being loaded, city pairs are created together (north-south, west-east). If there is no line for the
+city in the input file, but it is referenced in some direction, then this city will be present in the map.
+
 ## How to run
 1. Generate a map of size 20x30 (use your values):
 ```
