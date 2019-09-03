@@ -71,7 +71,7 @@ func TestParseCityName(t *testing.T) {
 		{"bar", "bar", false},
 		{"Bar", "Bar", false},
 		{"aa", "aa", false},
-		// {"a", "a", false},
+		{"a", "a", false},
 	}
 	for _, item := range testDataItems {
 		result, err := ParseCityName(item.input)
