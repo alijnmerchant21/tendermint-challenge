@@ -70,13 +70,13 @@ func (w *World) assingAlienToCity(id int, cityName string) {
 	w.aliens[id].cityName = cityName
 	c := w.cities[cityName]
 	if c.alienId != 0 {
-		w.figth(id, c.alienId, c.name)
+		w.fight(id, c.alienId, c.name)
 	} else {
 		c.alienId = id
 	}
 }
 
-func (w *World) figth(id1 int, id2 int, cityName string) {
+func (w *World) fight(id1 int, id2 int, cityName string) {
 	delete(w.aliens, id1)
 	delete(w.aliens, id2)
 	w.RemoveCity(cityName)
