@@ -32,28 +32,12 @@ func NewMap(r io.Reader) (*Map, error) {
 
 func putCityIntoMap(new *City, cities map[string]*City) error {
 	city := getOrCreate(cities, new.name)
-	if new.north != "" {
-		other := getOrCreate(cities, new.north)
-		if err := connectCities(city, North, other); err != nil {
-			return err
-		}
-	}
-	if new.south != "" {
-		other := getOrCreate(cities, new.south)
-		if err := connectCities(city, South, other); err != nil {
-			return err
-		}
-	}
-	if new.west != "" {
-		other := getOrCreate(cities, new.west)
-		if err := connectCities(city, West, other); err != nil {
-			return err
-		}
-	}
-	if new.east != "" {
-		other := getOrCreate(cities, new.east)
-		if err := connectCities(city, East, other); err != nil {
-			return err
+	for _, dir := range []Direction{North, South, West, East} {
+		if new.follow(dir) != "" {
+			other := getOrCreate(cities, new.follow(dir))
+			if err := connectCities(city, dir, other); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -69,15 +53,17 @@ func getOrCreate(cities map[string]*City, name string) *City {
 	}
 }
 
-func connectCities(from *City, dir Direction, to *City) error {
-	if from.dest(dir) != "" && from.dest(dir) != to.name {
-		return fmt.Errorf("conflict: %s.%s = [%s, %s]", from.name, dir, from.dest(dir), to.name)
+func connectCities(src *City, dir Direction, dst *City) error {
+	existent := src.follow(dir)
+	if existent != "" && existent != dst.name {
+		return fmt.Errorf("conflict: %s.%s = [%s, %s]", src.name, dir, existent, dst.name)
 	}
-	from.setDest(dir, to.name)
-	if to.dest(dir.Opposite()) != "" && to.dest(dir.Opposite()) != from.name {
-		return fmt.Errorf("conflict: %s.%s = [%s, %s]", to.name, dir, to.dest(dir.Opposite()), from.name)
+	src.setDest(dir, dst.name)
+	reverseExistent := dst.follow(dir.Opposite())
+	if reverseExistent != "" && reverseExistent != src.name {
+		return fmt.Errorf("conflict: %s.%s = [%s, %s]", dst.name, dir, reverseExistent, src.name)
 	}
-	to.setDest(dir.Opposite(), from.name)
+	dst.setDest(dir.Opposite(), src.name)
 	return nil
 }
 
