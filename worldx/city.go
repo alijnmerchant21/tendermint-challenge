@@ -25,7 +25,7 @@ func NewCity(name, n, s, w, e string) *City {
 	}
 }
 
-func (c *City) follow(dir Direction) string {
+func (c *City) getCityName(dir Direction) string {
 	switch dir {
 	case North:
 		return c.north

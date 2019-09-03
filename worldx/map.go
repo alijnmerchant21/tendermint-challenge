@@ -30,11 +30,12 @@ func NewMap(r io.Reader) (*Map, error) {
 	return &m, nil
 }
 
-func putCityIntoMap(new *City, cities map[string]*City) error {
-	city := getOrCreate(cities, new.name)
+func putCityIntoMap(raw *City, cities map[string]*City) error {
+	city := getOrCreate(cities, raw.name)
 	for _, dir := range []Direction{North, South, West, East} {
-		if new.follow(dir) != "" {
-			other := getOrCreate(cities, new.follow(dir))
+		otherName := raw.getCityName(dir)
+		if otherName != "" {
+			other := getOrCreate(cities, otherName)
 			if err := connectCities(city, dir, other); err != nil {
 				return err
 			}
@@ -47,19 +48,19 @@ func getOrCreate(cities map[string]*City, name string) *City {
 	if value, ok := cities[name]; ok {
 		return value
 	} else {
-		new := &City{name: name}
-		cities[name] = new
-		return new
+		c := &City{name: name}
+		cities[name] = c
+		return c
 	}
 }
 
 func connectCities(src *City, dir Direction, dst *City) error {
-	existent := src.follow(dir)
+	existent := src.getCityName(dir)
 	if existent != "" && existent != dst.name {
 		return fmt.Errorf("conflict: %s.%s = [%s, %s]", src.name, dir, existent, dst.name)
 	}
 	src.setDest(dir, dst.name)
-	reverseExistent := dst.follow(dir.Opposite())
+	reverseExistent := dst.getCityName(dir.Opposite())
 	if reverseExistent != "" && reverseExistent != src.name {
 		return fmt.Errorf("conflict: %s.%s = [%s, %s]", dst.name, dir, reverseExistent, src.name)
 	}
