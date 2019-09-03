@@ -25,6 +25,34 @@ func NewCity(name, n, s, w, e string) *City {
 	}
 }
 
+func (c *City) dest(dir Direction) string {
+	switch dir {
+	case North:
+		return c.north
+	case South:
+		return c.south
+	case West:
+		return c.west
+	case East:
+		return c.east
+	default:
+		return ""
+	}
+}
+
+func (c *City) setDest(dir Direction, val string) {
+	switch dir {
+	case North:
+		c.north = val
+	case South:
+		c.south = val
+	case West:
+		c.west = val
+	case East:
+		c.east = val
+	}
+}
+
 func (c *City) AvailableDirs() []Direction {
 	dirs := make([]Direction, 0)
 	if c.north != "" {

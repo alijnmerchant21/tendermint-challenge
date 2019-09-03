@@ -34,47 +34,27 @@ func putCityIntoMap(new *City, cities map[string]*City) error {
 	city := getOrCreate(cities, new.name)
 	if new.north != "" {
 		other := getOrCreate(cities, new.north)
-		if city.north != "" && city.north != new.north {
-			return fmt.Errorf("conflict: %s.north = [%s, %s]", city.name, city.north, new.north)
+		if err := connectCities(city, North, other); err != nil {
+			return err
 		}
-		city.north = new.north
-		if other.south != "" && other.south != new.name {
-			return fmt.Errorf("conflict: %s.south = [%s, %s]", other.name, other.south, new.name)
-		}
-		other.south = new.name
 	}
 	if new.south != "" {
 		other := getOrCreate(cities, new.south)
-		if city.south != "" && city.south != new.south {
-			return fmt.Errorf("conflict: %s.south = [%s, %s]", city.name, city.south, new.south)
+		if err := connectCities(city, South, other); err != nil {
+			return err
 		}
-		city.south = new.south
-		if other.north != "" && other.north != new.name {
-			return fmt.Errorf("conflict: %s.north = [%s, %s]", other.name, other.north, new.name)
-		}
-		other.north = new.name
 	}
 	if new.west != "" {
 		other := getOrCreate(cities, new.west)
-		if city.west != "" && city.west != new.west {
-			return fmt.Errorf("conflict: %s.west = [%s, %s]", city.name, city.west, new.west)
+		if err := connectCities(city, West, other); err != nil {
+			return err
 		}
-		city.west = new.west
-		if other.east != "" && other.east != new.name {
-			return fmt.Errorf("conflict: %s.east = [%s, %s]", other.name, other.east, new.name)
-		}
-		other.east = new.name
 	}
 	if new.east != "" {
 		other := getOrCreate(cities, new.east)
-		if city.east != "" && city.east != new.east {
-			return fmt.Errorf("conflict: %s.east = [%s, %s]", city.name, city.east, new.east)
+		if err := connectCities(city, East, other); err != nil {
+			return err
 		}
-		city.east = new.east
-		if other.west != "" && other.west != new.name {
-			return fmt.Errorf("conflict: %s.west = [%s, %s]", other.name, other.west, new.name)
-		}
-		other.west = new.name
 	}
 	return nil
 }
@@ -87,6 +67,18 @@ func getOrCreate(cities map[string]*City, name string) *City {
 		cities[name] = new
 		return new
 	}
+}
+
+func connectCities(from *City, dir Direction, to *City) error {
+	if from.dest(dir) != "" && from.dest(dir) != to.name {
+		return fmt.Errorf("conflict: %s.%s = [%s, %s]", from.name, dir, from.dest(dir), to.name)
+	}
+	from.setDest(dir, to.name)
+	if to.dest(dir.Opposite()) != "" && to.dest(dir.Opposite()) != from.name {
+		return fmt.Errorf("conflict: %s.%s = [%s, %s]", to.name, dir, to.dest(dir.Opposite()), from.name)
+	}
+	to.setDest(dir.Opposite(), from.name)
+	return nil
 }
 
 func (m *Map) RemoveCity(name string) {
