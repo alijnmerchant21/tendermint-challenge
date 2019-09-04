@@ -1,5 +1,5 @@
 test:
-	go test . -v
+	go test ./... -v
 
 generate-map:
 	go run ./mapgen -n 20 -m 30 -path ./testdata/map.txt
