@@ -16,8 +16,7 @@ func main() {
 	flag.Parse()
 
 	if len(*path) == 0 {
-		fmt.Fprintf(os.Stderr, "empty path\n")
-		os.Exit(-1)
+		exit(fmt.Errorf("empty path"))
 	}
 
 	cities := make(map[string]*worldx.City, *n**m)
@@ -36,8 +35,7 @@ func main() {
 
 	file, err := createFile(*path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(-1)
+		exit(err)
 	}
 	if file == nil {
 		os.Exit(0)
@@ -46,7 +44,9 @@ func main() {
 
 	for _, city := range cities {
 		s := fmt.Sprintf("%v\n", *city)
-		file.WriteString(s)
+		if _, err := file.WriteString(s); err != nil {
+			exit(err)
+		}
 	}
 
 	fmt.Printf("map (%vx%v) created\n", *n, *m)
@@ -120,4 +120,9 @@ func ask(msg string) bool {
 			return false
 		}
 	}
+}
+
+func exit(err error) {
+	fmt.Fprintf(os.Stderr, "%v\n", err)
+	os.Exit(-1)
 }
