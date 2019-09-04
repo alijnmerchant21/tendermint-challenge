@@ -53,7 +53,7 @@ city in the input file, but it is referenced in some direction, then this city w
 ## How to run
 1. Generate a map of size 20x30 (use your values):
 ```
-go run ./testdata -n 20 -m 30 -path ./testdata/map.txt
+go run ./mapgen -n 20 -m 30 -path ./testdata/map.txt
 ```
 2. Run the world with 500 aliens:
 ```
