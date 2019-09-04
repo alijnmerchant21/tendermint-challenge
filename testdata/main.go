@@ -46,7 +46,7 @@ func main() {
 }
 
 func cityName(i, j int) string {
-	return fmt.Sprintf("C%v%v", i, j)
+	return fmt.Sprintf("C-%v-%v", i, j)
 }
 
 func northernName(i, j int) string {
