@@ -13,32 +13,35 @@ func main() {
 	flag.Parse()
 
 	if len(*path) == 0 {
-		panic("empty path")
+		exit(fmt.Errorf("empty path"))
 	}
 
 	file, err := os.Open(*path)
 	if err != nil {
-		panic(err)
+		exit(err)
 	}
 	defer file.Close()
 
 	m, err := worldx.NewMap(file)
 	if err != nil {
-		panic(err)
+		exit(err)
 	}
 
 	r := worldx.Randomizer{}
 	world, err := worldx.NewWorld(m, *n, r)
 	if err != nil {
-		panic(err)
+		exit(err)
 	}
 
-	fmt.Printf("Initial world:\n%v\n", world)
-
 	if err := world.Run(); err != nil {
-		panic(err)
+		exit(err)
 	}
 
 	fmt.Printf("The rest of the world:\n%v\n", world)
 
+}
+
+func exit(err error) {
+	fmt.Fprintf(os.Stderr, "%v\n", err)
+	os.Exit(-1)
 }
