@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/climber73/tendermint-challenge/worldx"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -18,6 +19,15 @@ func main() {
 	if len(*path) == 0 {
 		exit(fmt.Errorf("empty path"))
 	}
+
+	file, err := createFile(*path)
+	if err != nil {
+		exit(err)
+	}
+	if file == nil {
+		os.Exit(0)
+	}
+	defer file.Close()
 
 	cities := make(map[string]*worldx.City, *n**m)
 	for i := 0; i < *n; i++ {
@@ -32,15 +42,6 @@ func main() {
 			)
 		}
 	}
-
-	file, err := createFile(*path)
-	if err != nil {
-		exit(err)
-	}
-	if file == nil {
-		os.Exit(0)
-	}
-	defer file.Close()
 
 	for _, city := range cities {
 		s := fmt.Sprintf("%v\n", *city)
@@ -104,6 +105,9 @@ func createFile(path string) (*os.File, error) {
 			return nil, nil
 		}
 	}
+	if err := ensureDir(filepath.Dir(path), 0700); err != nil {
+		return nil, err
+	}
 	return os.Create(path)
 }
 
@@ -125,4 +129,14 @@ func ask(msg string) bool {
 func exit(err error) {
 	fmt.Fprintf(os.Stderr, "%v\n", err)
 	os.Exit(-1)
+}
+
+func ensureDir(dir string, mode os.FileMode) error {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err := os.MkdirAll(dir, mode)
+		if err != nil {
+			return fmt.Errorf("Could not create directory %v. %v", dir, err)
+		}
+	}
+	return nil
 }
